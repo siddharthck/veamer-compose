@@ -1,0 +1,46 @@
+version : '3'
+
+services:
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - 16686:16686
+      - 6831:6831/udp
+
+  manage:
+    build: ./veamer_manage
+    volumes:
+      - ./veamer_manage:/app/veamer_manage
+    ports:
+      - 5000:5000
+    depends_on:
+      - jaeger
+
+  search:
+    build: ./veamer_search
+    volumes:
+      - ./veamer_search:/app/veamer_search
+    ports:
+      - 5001:5001
+    depends_on:
+      - jaeger
+      - manage
+  authentication:
+    container_name: authentication
+    image: docker-authentication
+    restart: always
+    build: ./JsTest
+    ports:
+      - "8080:8080"
+    environment:
+      - JAEGER_AGENT_HOST=jaeger
+      - JAEGER_AGENT_PORT=6831
+    depends_on:
+      - mongo
+      - jaeger
+      - search
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+    - "27017:27017"

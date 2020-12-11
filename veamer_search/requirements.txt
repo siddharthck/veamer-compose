@@ -1,0 +1,8 @@
+flask
+requests
+opentelemetry-sdk
+opentelemetry-instrumentation
+opentelemetry-instrumentation-flask
+opentelemetry-instrumentation-sqlite3
+opentelemetry-instrumentation-requests
+opentelemetry-exporter-jaeger
