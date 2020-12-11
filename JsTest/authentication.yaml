@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authservice1
+spec:
+  selector:
+    matchLabels:
+      app: authservice1
+  template:
+    metadata:
+      labels:
+        app: authservice1
+    spec:
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 5
+      containers:
+      - name: docker-authentication
+        image: adib070/docker-authentication:latest
+        ports:
+        - containerPort: 8080
